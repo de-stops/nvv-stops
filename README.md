@@ -5,23 +5,32 @@ This is a simple script to download all [NVV](https://www.nvv.de) stops as [GTFS
 The script uses the following endpoint:
 
 ```
-http://auskunft.nvv.de/auskunft/bin/jp/query.exe/dny?performLocating=2&tpl=stop2json&look_stopclass=2147483647&look_minx=5000000&look_miny=47000000&look_maxx=15000000&look_maxy=56000000
+http://auskunft.nvv.de/auskunft/bin/jp/query.exe/dny?performLocating=2&tpl=stop2json&look_stopclass=2147483647&look_minx={minx}&look_miny={miny}&look_maxx={maxx}&look_maxy={maxy}
 ```
 
-It starts from bounding box `(5000000, 47000000, 15000000, 56000000)` and works down to smaller quadrants until the query produces less than 500 stops.
+It starts from bounding box `(5, 47, 15, 56)` and works down to smaller quadrants.
+
 
 The script produces CSV output in the following format:
 
 ```
-"stop_id","stop_name","stop_lon","stop_lat"
-"2200352","Kassel Fuhrmannsbreite",9.521033,51.330393
+stop_id,stop_name,stop_lon,stop_lat,stop_code
+"2200006","Kassel Friedrichsplatz",9.495324,51.314176,""
 ```
+
+# Prerequisites
+
+These scrips use PostGIS to filter stops belonging to administrative regions covered by the transport company.  
+See [this project](https://github.com/highsource/postgis-verwaltungsgebiete) for a simple way to create a PostGIS database with administrative regions.
 
 # Usage
 
+## Windows
+
 ```
 npm install
-node index.js
+00-export-unfiltered-stops
+01-filter-stops
 ```
 
 # Disclaimer
